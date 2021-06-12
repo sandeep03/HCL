@@ -8,7 +8,7 @@ pipeline {
     
       steps {
         echo 'build application'  
-        sh 'mvn -B -DskipTests clean package'    
+        sh 'mvn2 -B -DskipTests clean package'    
       }
     
     }
