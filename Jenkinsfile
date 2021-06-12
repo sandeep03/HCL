@@ -7,15 +7,21 @@ pipeline {
     stage("build") {
     
       steps {
-        echo 'build application'      
+        echo 'build application'  
+        sh 'mvn -B -DskipTests clean package'    
       }
     
     }
     
     stage("test") {
-    
+      when {
+        expression {
+          BRANCH_NAME == 'master'
+        }
+      }
       steps {
-        echo 'test application'      
+        echo 'test application' 
+        sh 'mvn test     
       }
     
     }
