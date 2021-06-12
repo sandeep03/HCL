@@ -21,7 +21,7 @@ pipeline {
       }
       steps {
         echo 'test application' 
-        sh 'mvn test     
+        sh 'mvn test'     
       }
     
     }
