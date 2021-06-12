@@ -7,8 +7,9 @@ pipeline {
     stage("build") {
     
       steps {
-        echo 'building applications'
-      
+        node ('master'){
+                echo 'build application
+            }      
       }
     
     }
@@ -16,16 +17,18 @@ pipeline {
     stage("test") {
     
       steps {
-        echo 'test applications'
-      
+        node ('master'){
+                echo 'build application
+            }      
       }
     
     }
     stage("deploy") {
     
       steps {
-        echo 'deploying applications'
-      
+        node ('master'){
+                echo 'build application
+            }      
       }
     
     }
