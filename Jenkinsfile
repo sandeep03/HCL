@@ -8,7 +8,7 @@ pipeline {
     
       steps {
         node ('master'){
-                echo 'build application
+                echo 'build application'
             }      
       }
     
@@ -18,7 +18,7 @@ pipeline {
     
       steps {
         node ('master'){
-                echo 'build application
+                echo 'build application'
             }      
       }
     
@@ -27,7 +27,7 @@ pipeline {
     
       steps {
         node ('master'){
-                echo 'build application
+                echo 'build application'
             }      
       }
     
