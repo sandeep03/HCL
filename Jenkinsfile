@@ -13,13 +13,21 @@ pipeline {
             echo "M2_HOME = ${M2_HOME}"
         '''
       }
-    } 
+    }   
     stage("Build") {   
       steps {
         echo 'build application'  
         sh 'mvn -B -DskipTests clean package'    
       }     
-    }    
+    }  
+    stage("Sonarqube analysis") {
+      steps {
+        echo 'sonarqube analaysis' 
+        withSonarQubeEnv('sonarqube'){
+          sh "mvn sonar:sonar"
+        }    
+      }    
+    }
     stage("test") {
       when {
         expression {
