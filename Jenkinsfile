@@ -25,16 +25,12 @@ pipeline {
         echo 'sonarqube analaysis' 
         withSonarQubeEnv('sonarqube'){
           sh 'mvn sonar:sonar -Dsonar.projectKey=sample -Dsonar.host.url=http://sonarqube:9000' 
+          timeout(time: 1, unit: 'HOURS') {
+            waitForQualityGate abortPipeline: false
+        }
         }    
       }    
-    }
-    stage("Quality Gate") {
-      steps {
-        timeout(time: 1, unit: 'HOURS') {
-          waitForQualityGate abortPipeline: false
-        }
-      }
-    }
+    }    
     stage("test") {
       when {
         expression {
