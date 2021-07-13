@@ -1,52 +1,30 @@
 pipeline {
-
-  agent any 
-  tools {
-    maven 'maven'
-    jdk 'JDK'
-  }
-  stages{
-    stage ('Initialize') {
-      steps {
-        sh '''
-            echo "PATH = ${PATH}"
-            echo "M2_HOME = ${M2_HOME}"
-        '''
-      }
-    }   
-    stage("Build") {   
-      steps {
-        echo 'build application'  
-        sh 'mvn -B -DskipTests clean package'    
-      }     
-    }  
-    stage("Sonarqube analysis") {
-      steps {
-        echo 'sonarqube analaysis' 
-        withSonarQubeEnv('sonarqube'){
-          sh 'mvn sonar:sonar -Dsonar.projectKey=sample -Dsonar.host.url=http://sonarqube:9000'          
-        }    
-      }    
-    }    
-    stage("test") {
-      when {
-        expression {
-          BRANCH_NAME == 'master'
+    agent {
+        docker {
+            image 'maven:3-alpine' 
+            args '-v /root/.m2:/root/.m2' 
         }
-      }
-      steps {
-        echo 'test application' 
-        sh 'mvn test'     
-      }    
     }
-    stage("deploy") {
-    
-      steps {
-        echo 'deploy application'      
-      }
-    
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'mvn -B -DskipTests clean package' 
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+            }
+        }
     }
-  }
-
-
 }
